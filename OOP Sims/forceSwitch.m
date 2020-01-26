@@ -1,4 +1,4 @@
-function [f, a] = forceSwitch(Force, h, N, Ns)
+function [f, a] = forceSwitch(Force, ,Effect, h, N, Ns, g)
 
 % This function adds an external force to the string, at a given point on
 % the string (a), of different types. 'off' is no force. 'pluck' is pulling
@@ -24,6 +24,11 @@ switch Force
         f(3:5) = 0;
     case 'strike'
         f(5:20) = 0.001*hann(16);  % Excited with a hann functino curve
+end
+
+switch Effect
+    case 'hamstr'
+        a=g;
 end
 
 end

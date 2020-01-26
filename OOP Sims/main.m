@@ -20,13 +20,14 @@ Force = 'pluck';       % 'off' for nothing
                        % 'pluck'
                        % 'hardpluck'
                        % 'strike'
-
+                       
 Effect = 'fdl';        % 'none' for nothing
                        % 'loss' has just one type of loss
                        % 'realistic' has two
                        % 'bar' is a bar
                        % 'stiff' is a soft bar
                        % 'fdl' is frequency dependent loss
+                       % 'hamstr' for hammer-string interaction
                        
 Synthesize = 'play';   % Whether you see string ('plot'), hear string ('play'), or see the sound ('plotsound')
 
@@ -55,9 +56,21 @@ A = 0.2;                     % Cross-sectional area
 I = sqrt(A/pi)/2;            % Bar moment of inertia (I = R/2 for cylinder)
 kappa = sqrt((E*I)/(p*A));   % Stiffness parameter
 theta = 1;                   % 'free parameter'
+hampnt=0;                    %Hammer position relative to string 
+uh=zeros(Ns,1);              %Hammer position vector   
 switch Effect
     case 'stiff'
-        c = sqrt(T/(p*A));
+        Tns= ;              %Tension
+        c = sqrt(T/(p*A));  %Need to change T to tension        
+    case 'hamstr'
+        Tns= ;              %Tension
+        ps= ;               %Set linear mass density
+        c=Tns/ps;
+        M= ;                %Mass of hammer
+        alpha= ;            %exp for phi
+        m=(k^2)/M+(k^2)/(ps*h);      
+        uh(1)= ;,uh(2)= ; %init conds of hammer
+        hampnt=round((N+1)/2);       
 end
 
 % Starting position of the string
@@ -69,6 +82,9 @@ if Starting
     u(2,(round(N/2-5):round(N/2+5))) = hann(11);
 end
 
+%Hammer distribution
+g=zeros(1,N+1);,g(hampnt)=1/h;   
+
 
 %%% Running Functions For Synthesis %%%
 
@@ -76,12 +92,12 @@ end
 [A, B, C] = effectSwitch(Effect, b0, b1, c, h, k, N, kappa, theta);
 
 % Force switch
-[f, a] = forceSwitch(Force, h, N, Ns);
+[f, a] = forceSwitch(Force, h, N, Ns, g);
 
 % Boundary condition switch
 B = boundarySwitch(B, N, Boundary); 
 
 % Switch to synthesize the sound
-synthesizeSwitch(Synthesize, A, B, C, u, f, a, N, Ns);
+synthesizeSwitch(Synthesize, Effect, A, B, C, u, f, a, c, N, Ns,hampnt, m, kappa);
 
  

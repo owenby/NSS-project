@@ -40,6 +40,10 @@ switch Effect
         A = -(1+b0*k)*eye(N+1,N+1) + b1*k*Dxx;
         B = -2*eye(N+1,N+1) - c^2*k^2*Dxx + kappa^2*k^2*Dxxxx;
         C = (1+b0*k)*eye(N+1,N+1) + b1*k*Dxx;
+    case 'hamstr'
+        A = eye(N+1,N+1);
+        B = 2*eye(N+1,N+1) + c*k^2*Dxx;
+        C = -A;
 end
 
 % Making the matrices sparse martrices for optimality 
