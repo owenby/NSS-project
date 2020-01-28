@@ -28,6 +28,7 @@ switch Synthesize
                         +m*kappa*max(0,an)^(alpha+1)/(rn^2*(alpha+1)^2);
                     rn=rn-G/Gp;
                  end
+                 phir=kappa/(alpha+1)*(max(0,rn+an)^(alpha+1));
                  f(i)=(phir-phia)/rn;                 
             end
             % Calculates next step in time
@@ -63,6 +64,7 @@ switch Synthesize
                         +m*kappa*max(0,an)^(alpha+1)/(rn^2*(alpha+1)^2);
                     rn=rn-G/Gp;
                  end
+                 phir=kappa/(alpha+1)*(max(0,rn+an)^(alpha+1));
                  f(i)=(phir-phia)/rn;                 
             end
             % Calculates next step in time
@@ -97,6 +99,9 @@ switch Synthesize
                         +m*kappa*max(0,an)^(alpha+1)/(rn^2*(alpha+1)^2);
                     rn=rn-G/Gp;
                  end
+                 phir=kappa/(alpha+1)*(max(0,rn+an)^(alpha+1));
+                 f(i)=(phir-phia)/rn; 
+              end
             % Calculates next step in time
             u(i+1,:) = A\(B*u(i,:)'+C*u(i-1,:)' + f(i)*a);
             switch Effect
