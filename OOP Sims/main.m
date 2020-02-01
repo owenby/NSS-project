@@ -71,7 +71,9 @@ switch Effect
         alpha= ;            %exp for phi
         m=(k^2)/M+(k^2)/(ps*h);      
         uh(1)= ;,uh(2)= ; %init conds of hammer
-        hampnt=round((N+1)/2);       
+        hampnt=round((N+1)/2); 
+    case 'hamlss'
+        m=(k^2)/(h*(1+(b0*k)/(2*ps)))+k^2/M;
 end
 
 % Starting position of the string
@@ -99,6 +101,6 @@ g=zeros(1,N+1);,g(hampnt)=1/h;
 B = boundarySwitch(B, N, Boundary); 
 
 % Switch to synthesize the sound
-synthesizeSwitch(Synthesize, Effect, A, B, C, u, f, a, c, N, Ns,hampnt, m, kappa);
+synthesizeSwitch(Synthesize, Effect, A, B, C, u, f, a, c, N, Ns,hampnt, m, kappa, b0);
 
  
