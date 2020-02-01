@@ -28,7 +28,7 @@ end
 
 switch Effect
     case 'hamstr'
-        a=g;
+        a=(k^2/ps)*g;
 end
 
 end

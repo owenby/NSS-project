@@ -27,7 +27,8 @@ Effect = 'fdl';        % 'none' for nothing
                        % 'bar' is a bar
                        % 'stiff' is a soft bar
                        % 'fdl' is frequency dependent loss
-                       % 'hamstr' for hammer-string interaction
+                       % 'hamstr' for lossless hammer-string interaction
+                       % 'hamlss' for single loss term ham str interaction
                        
 Synthesize = 'play';   % Whether you see string ('plot'), hear string ('play'), or see the sound ('plotsound')
 
@@ -62,7 +63,7 @@ switch Effect
     case 'stiff'
         Tns= ;              %Tension
         c = sqrt(T/(p*A));  %Need to change T to tension        
-    case 'hamstr'
+    case {'hamstr','hamlss'}
         Tns= ;              %Tension
         ps= ;               %Set linear mass density
         c=Tns/ps;
@@ -89,10 +90,10 @@ g=zeros(1,N+1);,g(hampnt)=1/h;
 %%% Running Functions For Synthesis %%%
 
 % Initialising the matrices for system
-[A, B, C] = effectSwitch(Effect, b0, b1, c, h, k, N, kappa, theta);
+[A, B, C] = effectSwitch(Effect, b0, b1, c, h, k, N, kappa, theta, ps);
 
 % Force switch
-[f, a] = forceSwitch(Force, h, N, Ns, g);
+[f, a] = forceSwitch(Force, h, N, Ns, g, k, ps);
 
 % Boundary condition switch
 B = boundarySwitch(B, N, Boundary); 
