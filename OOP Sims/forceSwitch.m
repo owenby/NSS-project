@@ -27,7 +27,7 @@ switch Force
 end
 
 switch Effect
-    case 'hamstr'
+    case {'hamstr','hamlss'}
         a=(k^2/ps)*g;
 end
 

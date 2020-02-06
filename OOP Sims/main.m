@@ -62,19 +62,32 @@ uh=zeros(Ns,1);              %Hammer position vector
 switch Effect
     case 'stiff'
         Tns= ;              %Tension
-        c = sqrt(T/(p*A));  %Need to change T to tension        
-    case {'hamstr','hamlss'}
+        c = sqrt(Tns/(p*A));  %Need to change T to tension        
+    case 'hamstr'
         Tns= ;              %Tension
         ps= ;               %Set linear mass density
         c=Tns/ps;
         M= ;                %Mass of hammer
-        alpha= ;            %exp for phi
-        m=(k^2)/M+(k^2)/(ps*h);      
+        alpha= ;            %exp for phi            
         uh(1)= ;,uh(2)= ; %init conds of hammer
         hampnt=round((N+1)/2); 
+        g=zeros(1,N+1);,g(hampnt)=1/h;   %Hammer distribution
+        m=(k^2)/M+(k^2)/(ps*h);          
     case 'hamlss'
+        Tns= ;              %Tension
+        ps= ;               %Set linear mass density
+        c=Tns/ps;
+        M= ;                %Mass of hammer
+        alpha= ;            %exp for phi            
+        uh(1)= ;,uh(2)= ; %init conds of hammer
+        hampnt=round((N+1)/2); 
+        g=zeros(1,N+1);,g(hampnt)=1/h;   %Hammer distribution
         m=(k^2)/(h*(1+(b0*k)/(2*ps)))+k^2/M;
+        
 end
+
+%Hammer distribution
+g=zeros(1,N+1);,g(hampnt)=1/h;   
 
 % Starting position of the string
 u = zeros(Ns,N+1);
@@ -84,10 +97,6 @@ if Starting
     u(1,(round(N/2-5):round(N/2+5))) = hann(11);
     u(2,(round(N/2-5):round(N/2+5))) = hann(11);
 end
-
-%Hammer distribution
-g=zeros(1,N+1);,g(hampnt)=1/h;   
-
 
 %%% Running Functions For Synthesis %%%
 

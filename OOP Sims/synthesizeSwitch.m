@@ -10,17 +10,19 @@ eps=10^(-10);
 G=1;
 for i=2:Ns-1
     switch Effect
-        case {'hamstr','hamlss'} %Finds bn and f for the ith timestep            
+        case 'hamstr' %Finds bn and f for the ith timestep            
             eta(i)=uh(i)-u(i,hampnt);
             an=eta(i-1);
             phia=kappa/(alpha+1)*(max(0,an)^(alpha+1));
-            dxxb=c*k*(u(i,hampnt+1)-2*u(i,hampnt)+u(i,hampnt-1));
-        switch Effect
-            case 'hamstr'
-                bn=-(2*uh(i)-2*uh(i-1)-2*u(i,hampnt)-dxxb+2*u(i-1,hampnt));
-            case 'hamlss'
-                bn=-(2*uh(i)-2*uh(i-1)-(1/(1+(b0*k/(2*ps)))...
-                    *((2+c*k^2*dxx)+(b0*k/(2*ps)-2)*u(i-1,hampnt);
+            dxxb=c*k*(u(i,hampnt+1)-2*u(i,hampnt)+u(i,hampnt-1));     
+            bn=-(2*uh(i)-2*uh(i-1)-2*u(i,hampnt)-dxxb+2*u(i-1,hampnt));
+        case 'hamlss'
+            eta(i)=uh(i)-u(i,hampnt);
+            an=eta(i-1);
+            phia=kappa/(alpha+1)*(max(0,an)^(alpha+1));
+            dxxb=c*k*(u(i,hampnt+1)-2*u(i,hampnt)+u(i,hampnt-1)); 
+            bn=-(2*uh(i)-2*uh(i-1)-(1/(1+(b0*k/(2*ps)))...
+               *((2+c*k^2*dxx)+(b0*k/(2*ps)-2)*u(i-1,hampnt);
         end
             rn=1;
             while abs(G)>eps
