@@ -1,4 +1,4 @@
-function [f, a] = forceSwitch(Force, ,Effect, h, N, Ns, g)
+function [f, a] = forceSwitch(Force, Effect, h, N, Ns, g, k, ps)
 
 % This function adds an external force to the string, at a given point on
 % the string (a), of different types. 'off' is no force. 'pluck' is pulling
@@ -27,7 +27,7 @@ switch Force
 end
 
 switch Effect
-    case {'hamstr','hamlss'}
+    case {'hamstr','hamlss','hamstf'}
         a=(k^2/ps)*g;
 end
 

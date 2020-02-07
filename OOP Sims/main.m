@@ -21,7 +21,7 @@ Force = 'pluck';       % 'off' for nothing
                        % 'hardpluck'
                        % 'strike'
                        
-Effect = 'fdl';        % 'none' for nothing
+Effect = 'hamstr';        % 'none' for nothing
                        % 'loss' has just one type of loss
                        % 'realistic' has two
                        % 'bar' is a bar
@@ -29,8 +29,9 @@ Effect = 'fdl';        % 'none' for nothing
                        % 'fdl' is frequency dependent loss
                        % 'hamstr' for lossless hammer-string interaction
                        % 'hamlss' for single loss term ham str interaction
+                       % 'hamstf' for stiff ham str interaction
                        
-Synthesize = 'play';   % Whether you see string ('plot'), hear string ('play'), or see the sound ('plotsound')
+Synthesize = 'plot';   % Whether you see string ('plot'), hear string ('play'), or see the sound ('plotsound')
 
 
 %%% Variable Setup %%%
@@ -52,42 +53,42 @@ b1 = 0.1;        % Second loss term
 
 % Stiffness variables
 E = 2;                       % Youngs modulus of material
-p = 800;                     % Density
+p = 1;                       % Density
 A = 0.2;                     % Cross-sectional area
 I = sqrt(A/pi)/2;            % Bar moment of inertia (I = R/2 for cylinder)
 kappa = sqrt((E*I)/(p*A));   % Stiffness parameter
 theta = 1;                   % 'free parameter'
-hampnt=0;                    %Hammer position relative to string 
-uh=zeros(Ns,1);              %Hammer position vector   
+hampnt = round((N+1)/2);       % Hammer position relative to string 
+alpha = 1;                   % exp for phi   
+uh = zeros(Ns,1);            % Hammer position vector
+g = zeros(N+1,1);            % Vector to apply force at hampnt   
+ps = 0;                      % Linear mass density   
+m = 0;                       % initialising value
+v0 = 10;                      % velocity of hammer   
 switch Effect
     case 'stiff'
-        Tns= ;              %Tension
+        Tns= 9;              %Tension
         c = sqrt(Tns/(p*A));  %Need to change T to tension        
-    case 'hamstr'
-        Tns= ;              %Tension
-        ps= ;               %Set linear mass density
+    case {'hamstr','hamstf'}
+        Tns= 0.01;              %Tension
+        ps= p*A;               %Set linear mass density
         c=Tns/ps;
-        M= ;                %Mass of hammer
-        alpha= ;            %exp for phi            
-        uh(1)= ;,uh(2)= ; %init conds of hammer
-        hampnt=round((N+1)/2); 
-        g=zeros(1,N+1);,g(hampnt)=1/h;   %Hammer distribution
+        M= 4;                %Mass of hammer                   
+        uh(1)= -0.1;,uh(2)= uh(1)+v0*k; %init conds of hammer               
         m=(k^2)/M+(k^2)/(ps*h);          
     case 'hamlss'
-        Tns= ;              %Tension
-        ps= ;               %Set linear mass density
+        Tns= 9;              %Tension
+        ps= p*A;               %Set linear mass density
         c=Tns/ps;
-        M= ;                %Mass of hammer
-        alpha= ;            %exp for phi            
-        uh(1)= ;,uh(2)= ; %init conds of hammer
-        hampnt=round((N+1)/2); 
+        M= 0.5;                %Mass of hammer                    
+        uh(1)= -0.3;,uh(2)= uh(1)+v0*k; %init conds of hammer        
         g=zeros(1,N+1);,g(hampnt)=1/h;   %Hammer distribution
-        m=(k^2)/(h*(1+(b0*k)/(2*ps)))+k^2/M;
+        m=(k^2)/(h*ps*(1+(b0*k)/(2*ps)))+k^2/M;
         
 end
 
 %Hammer distribution
-g=zeros(1,N+1);,g(hampnt)=1/h;   
+g(hampnt)=1/h;   
 
 % Starting position of the string
 u = zeros(Ns,N+1);
@@ -104,12 +105,12 @@ end
 [A, B, C] = effectSwitch(Effect, b0, b1, c, h, k, N, kappa, theta, ps);
 
 % Force switch
-[f, a] = forceSwitch(Force, h, N, Ns, g, k, ps);
+[f, a] = forceSwitch(Force, Effect, h, N, Ns, g, k, ps);
 
 % Boundary condition switch
 B = boundarySwitch(B, N, Boundary); 
 
 % Switch to synthesize the sound
-synthesizeSwitch(Synthesize, Effect, A, B, C, u, f, a, c, N, Ns,hampnt, m, kappa, b0);
+synthesizeSwitch(Synthesize, Effect, A, B, C, u, uh, g, f, a, c, N, Ns, hampnt, m, kappa, b0, h, k, ps);
 
  

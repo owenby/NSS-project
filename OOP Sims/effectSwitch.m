@@ -48,6 +48,10 @@ switch Effect
         A = (1+(b0*k)/(2*ps))*eye(N+1,N+1);
         B = 2*eye(N+1,N+1) + c*k^2*Dxx;
         C = ((b0*k)/(2*ps)-1)*eye(N+1,N+1);
+    case 'hamstf'
+        A = eye(N+1,N+1);
+        B = 2*A+c*k^2*Dxx+((kappa^2*k^2)/ps)*Dxxxx;
+        C = -A;
 end
 
 % Making the matrices sparse martrices for optimality 
