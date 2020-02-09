@@ -9,7 +9,7 @@ function [f, a] = forceSwitch(Force, Effect, h, N, Ns, g, k, ps)
 % Initialising the force
 f = zeros(Ns,1);
 % Where the string is forced
-a = zeros(N+1,1);   
+a = zeros(1,N+1);   
 a(7) = 1/h;        
 
 % Switching the types of excitation

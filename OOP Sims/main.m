@@ -21,7 +21,7 @@ Force = 'pluck';       % 'off' for nothing
                        % 'hardpluck'
                        % 'strike'
                        
-Effect = 'hamstr';        % 'none' for nothing
+Effect = 'fdl';        % 'none' for nothing
                        % 'loss' has just one type of loss
                        % 'realistic' has two
                        % 'bar' is a bar
@@ -53,7 +53,7 @@ b1 = 0.1;        % Second loss term
 
 % Stiffness variables
 E = 2;                       % Youngs modulus of material
-p = 1;                       % Density
+p = 80;                       % Density
 A = 0.2;                     % Cross-sectional area
 I = sqrt(A/pi)/2;            % Bar moment of inertia (I = R/2 for cylinder)
 kappa = sqrt((E*I)/(p*A));   % Stiffness parameter
@@ -61,19 +61,16 @@ theta = 1;                   % 'free parameter'
 hampnt = round((N+1)/2);       % Hammer position relative to string 
 alpha = 1;                   % exp for phi   
 uh = zeros(Ns,1);            % Hammer position vector
-g = zeros(N+1,1);            % Vector to apply force at hampnt   
+g = zeros(1,N+1);            % Vector to apply force at hampnt   
 ps = 0;                      % Linear mass density   
 m = 0;                       % initialising value
-v0 = 10;                      % velocity of hammer   
-switch Effect
-    case 'stiff'
-        Tns= 9;              %Tension
-        c = sqrt(Tns/(p*A));  %Need to change T to tension        
+v0 = 5;                      % velocity of hammer   
+switch Effect    
     case {'hamstr','hamstf'}
-        Tns= 0.01;              %Tension
+        Tns= 10;              %Tension
         ps= p*A;               %Set linear mass density
         c=Tns/ps;
-        M= 4;                %Mass of hammer                   
+        M= 1;                %Mass of hammer                   
         uh(1)= -0.1;,uh(2)= uh(1)+v0*k; %init conds of hammer               
         m=(k^2)/M+(k^2)/(ps*h);          
     case 'hamlss'

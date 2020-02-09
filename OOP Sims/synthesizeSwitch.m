@@ -34,9 +34,10 @@ for i=2:Ns-1
                    -4*u(i,hampnt-1)+u(i,hampnt-2))/h^4;
             bn=-(2*uh(i)-2*uh(i-1)-(2*u(i,hampnt)+dxxb+dxxxxb)+2*u(i-1,hampnt));            
     end
-              rn=an;
+             
         switch Effect 
           case {'hamstr','hamlss','hamstf'}
+               rn=an;
             while abs(G)>eps
                 phir=kappa/(alpha+1)*(max(0,rn+an)^(alpha+1));
                 G=rn+m*((phir-phia)/rn)+bn;
@@ -50,7 +51,7 @@ for i=2:Ns-1
         
     
     % Calculates next step in time
-    u(i+1,:) = A\(B*u(i,:)'+C*u(i-1,:)' + f(i)*a);
+    u(i+1,:) = A\(B*u(i,:)'+C*u(i-1,:)' + f(i)*a');
     switch Effect
         case {'hamstr','hamlss','hamstf'}
             %Updates hammer position
@@ -61,7 +62,7 @@ for i=2:Ns-1
         case 'plot'
             % Plots string in real time
             switch Effect
-                case {'hamstr'}
+                case {'hamstr','hamstf','hamlss'}
                     gham=zeros(1,N+1);
                     gham(hampnt)=uh(i);
                     plot(x,u(i,:),x,gham,'o');
