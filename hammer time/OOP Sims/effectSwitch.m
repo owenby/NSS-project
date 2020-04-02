@@ -1,4 +1,4 @@
-function [A, B, C] = effectSwitch(Effect, b0, c, h, k, N, kappa, ps)
+function [A, B, C] = effectSwitch(Effect, b0, b1, c, h, k, N, kappa, ps, g)
 
 % This function creates the matrices for the finite difference scheme
 % solver, each case relates to a desired effect on the string. 'fdl' stands
@@ -22,6 +22,10 @@ switch Effect
         A = (1+(b0*k)/(2*ps))*eye(N+1,N+1);
         B = 2*eye(N+1,N+1) + c*k^2*Dxx;
         C = ((b0*k)/(2*ps)-1)*eye(N+1,N+1);
+    case 'hamlss2'
+        A = (1+(k*b0)/(2*ps))*eye(N+1,N+1)-((k*b1)/(2*ps))*Dxx;
+        B = 2*eye(N+1,N+1) + c*k^2*Dxx;
+        C = ((k*b0)/(2*ps)-1)*eye(N+1,N+1)-((k*b1)/(2*ps))*Dxx;              
     case 'hamstf'
         A = eye(N+1,N+1);
         B = 2*A+c*k^2*Dxx+((kappa^2*k^2)/ps)*Dxxxx;
@@ -34,4 +38,3 @@ B = sparse(B);
 C = sparse(C);
 
 end
-
