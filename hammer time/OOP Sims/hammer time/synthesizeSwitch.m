@@ -81,7 +81,7 @@ for i=2:Ns-1
     end
 
     %Updates hammer position
-    uh(i+1)=2*uh(i)-uh(i-1)-(k^2/m)*f(i);
+    uh(i+1)=2*uh(i)-uh(i-1)-(k^2/M)*f(i);
     
     switch Synthesize
         case 'plot'
